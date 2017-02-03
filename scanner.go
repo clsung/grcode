@@ -4,8 +4,6 @@ package grcode
 // #include <zbar.h>
 import "C"
 
-import "log"
-
 // Scanner is wrapper of zbar_image_scanner
 type Scanner struct {
 	image_scanner *C.zbar_image_scanner_t
@@ -38,6 +36,5 @@ func (s *Scanner) Scan(img *ZbarImage) int {
 
 // Close suicides
 func (s *Scanner) Close() {
-	log.Println("called Destroy")
 	C.zbar_image_scanner_destroy(s.image_scanner) // void function
 }

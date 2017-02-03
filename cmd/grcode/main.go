@@ -13,7 +13,7 @@ import (
 //go build -ldflags "-linkmode external -extldflags -static"
 func main() {
 	flag.Parse()
-	log.SetFlags(0)
+	//log.SetFlags(0)
 	if len(flag.Args()) < 1 {
 		log.Fatal("Need specify the image file")
 	}
@@ -27,6 +27,6 @@ func main() {
 		log.Printf("No qrcode detected from file: %s", filePath)
 	}
 	for _, result := range results {
-		fmt.Printf("Data %s\n", result)
+		fmt.Printf("%s\n", result)
 	}
 }

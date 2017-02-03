@@ -4,10 +4,7 @@ package grcode
 // #include <zbar.h>
 import "C"
 
-import (
-	"log"
-	"runtime"
-)
+import "log"
 
 // Scanner is wrapper of zbar_image_scanner
 type Scanner struct {
@@ -19,7 +16,8 @@ func NewScanner() *Scanner {
 	r := &Scanner{image_scanner: C.zbar_image_scanner_create()}
 	// runtime.SetFinalizer() works well for automatically free()'ing cgo memory allocations!
 	// the finalizer will be called when the garbage collector is invoked.
-	runtime.SetFinalizer(r, (*Scanner).Destroy)
+	// we can derfer destroy on our own
+	// runtime.SetFinalizer(r, (*Scanner).Destroy)
 	return r
 }
 
@@ -38,8 +36,8 @@ func (s *Scanner) Scan(img *ZbarImage) int {
 	return int(C.zbar_scan_image(s.image_scanner, img.image))
 }
 
-// Destroy suicides
-func (s *Scanner) Destroy() {
+// Close suicides
+func (s *Scanner) Close() {
 	log.Println("called Destroy")
 	C.zbar_image_scanner_destroy(s.image_scanner) // void function
 }

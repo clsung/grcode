@@ -27,8 +27,10 @@ func GetDataFromFile(imagePath string) (results []string, err error) {
 		return results, err
 	}
 	scanner := NewScanner()
+	defer scanner.Close()
 	scanner.SetConfig(0, C.ZBAR_CFG_ENABLE, 1)
 	zImg := NewZbarImage(m)
+	defer zImg.Close()
 	scanner.Scan(zImg)
 	symbol := zImg.GetSymbol()
 	for ; symbol != nil; symbol = symbol.Next() {

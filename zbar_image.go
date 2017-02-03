@@ -8,7 +8,6 @@ import "image"
 import "image/draw"
 
 import "unsafe"
-import "runtime"
 
 type ZbarImage struct {
 	image *C.zbar_image_t
@@ -34,7 +33,8 @@ func NewZbarImage(img image.Image) *ZbarImage {
 	C.zbar_image_set_data(zImg.image, unsafe.Pointer(&gray.Pix[0]), C.ulong(len(gray.Pix)), nil)
 
 	// finalizer
-	runtime.SetFinalizer(zImg, (*ZbarImage).Destroy)
+	// see notes in scanner.go
+	// runtime.SetFinalizer(zImg, (*ZbarImage).Destroy)
 	return zImg
 }
 
@@ -48,7 +48,7 @@ func (z *ZbarImage) GetSymbol() *Symbol {
 	return NewSymbol(s)
 }
 
-// Destroy suicides
-func (z *ZbarImage) Destroy() {
+// Close suicides
+func (z *ZbarImage) Close() {
 	C.zbar_image_destroy(z.image)
 }

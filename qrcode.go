@@ -6,6 +6,8 @@ package grcode
 import "C"
 import (
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"log"
 	"os"
 )

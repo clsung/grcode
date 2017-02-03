@@ -18,6 +18,7 @@ type Scanner struct {
 func NewScanner() *Scanner {
 	r := &Scanner{image_scanner: C.zbar_image_scanner_create()}
 	// runtime.SetFinalizer() works well for automatically free()'ing cgo memory allocations!
+	// the finalizer will be called when the garbage collector is invoked.
 	runtime.SetFinalizer(r, (*Scanner).Destroy)
 	return r
 }
